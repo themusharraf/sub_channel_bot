@@ -48,8 +48,8 @@ async def main():
     await dp.start_polling(bot)
 
 
-@dp.callback_query(text="subchanneldone")
-async def subchanneldone(message: types.Message):
+@dp.callback_query(lambda c: c.data =="subchanneldone")
+async def subchanneldone(call: types.CallbackQuery,message: types.Message):
     await bot.delete_message(message.from_user.id, message.message_id)
     if check_sup_channel(
             chat_member=await bot.get_chat_member(chat_id=settings.bots.channel_id, user_id=message.from_user.id)):
