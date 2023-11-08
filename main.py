@@ -58,6 +58,10 @@ async def subchanneldone(call: CallbackQuery):
         await bot.send_message(call.from_user.id, "salom", reply_markup=keyboard)
     else:
         await bot.send_message(call.from_user.id, not_sub_message, reply_markup=checkSubMenu)
+        text = "Kanalga obuna bo'lmagansiz ⚠️"
+        show_alert = True
+        await call.answer(text, show_alert=show_alert)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
