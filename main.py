@@ -38,7 +38,7 @@ async def bot_message(message: types.Message):
         if check_sup_channel(
                 chat_member=await bot.get_chat_member(chat_id=settings.bots.channel_id, user_id=message.from_user.id)):
             if message.text == "Profile":
-                await bot.send_message(message.from_user.id, "my tg profil")
+                await bot.send_message(message.from_user.id, "my telegram profil")
             else:
                 await bot.send_message(message.from_user.id, "No check_sup_channel")
         else:
