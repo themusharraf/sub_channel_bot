@@ -11,7 +11,7 @@ class Bots:
 
 @dataclass
 class Settings:
-    bots: Bots
+    bots: Bots # TODO: remove this admin class
 
 
 def get_settings(path: str):
