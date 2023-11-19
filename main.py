@@ -1,30 +1,19 @@
 import logging
+import random
 import asyncio
-import sqlite3
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from markups import keyboard, checkSubMenu
 from root import settings
 from aiogram.types import CallbackQuery
-import random
+from db import Database
 
 logging.basicConfig(level=logging.INFO)
 
 bot = Bot(token=settings.bots.bot_token)
 dp = Dispatcher()
-
+db = Database("preson.db")
 not_sub_message = "kanalga obuna buling !"
-
-conn = sqlite3.connect('preson.db')
-cursor = conn.cursor()
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        userid INTEGER
-    )
-''')
-conn.commit()
 
 
 def check_sup_channel(chat_member):
@@ -37,22 +26,18 @@ def check_sup_channel(chat_member):
 
 @dp.message(Command("start"))
 async def start(message: types.Message):
-    name = message.from_user.first_name
-    userid = message.from_user.id
-
-    # Insert user data into the SQLite database
-    cursor.execute('INSERT INTO users (name, userid) VALUES (?, ?)', (name, userid))
-    conn.commit()
-
     if message.chat.type == "private":
-        if check_sup_channel(
-                chat_member=await bot.get_chat_member(chat_id=settings.bots.channel_id, user_id=message.from_user.id)):
-            await bot.send_message(message.from_user.id, "salom")  # reply_markup=keyboard
-        else:
-            await bot.send_message(message.from_user.id, not_sub_message, reply_markup=checkSubMenu)
+        if not db.user_exists(message.from_user.id):
+            db.add_user(message.from_user.id)
+            if check_sup_channel(
+                    chat_member=await bot.get_chat_member(chat_id=settings.bots.channel_id,
+                                                          user_id=message.from_user.id)):
+                await bot.send_message(message.from_user.id, "salom")  # reply_markup=keyboard
+            else:
+                await bot.send_message(message.from_user.id, not_sub_message, reply_markup=checkSubMenu)
 
 
-@dp.message()
+@dp.message(Command("random"))
 async def bot_message(message: types.Message):
     if message.chat.type == "private":
         if check_sup_channel(
@@ -65,6 +50,22 @@ async def bot_message(message: types.Message):
             await bot.send_message(message.from_user.id, "No check_sup_channel")
     else:
         await bot.send_message(message.from_user.id, not_sub_message, reply_markup=checkSubMenu)
+
+
+@dp.message(Command("sendall"))
+async def sendallll(message: types.Message):
+    if message.chat.type == "private":
+        if message.from_user.id == 5751237091:
+            text = message.text[9:]
+            users = db.get_user()
+            for row in users:
+                try:
+                    await bot.send_message(row[0], text)
+                    if int(row[1]) != 1:
+                        db.set_active(row[0], 1)
+                except:
+                    db.set_active(row[0], 0)
+            await bot.send_message(message.from_user.id, f"uspeshni rasiilka {users[1]}")
 
 
 async def main():
