@@ -20,7 +20,7 @@ btnUrlChannel = InlineKeyboardButton(
 )
 
 btnDoneSub = InlineKeyboardButton(
-    text="Obunani tekshiring 🔐",
+    text="Obunani tek 🔐",
     callback_data="subchanneldone",
     resize_keyboard=True
 )
