@@ -14,12 +14,12 @@ keyboard = types.ReplyKeyboardMarkup(
 )
 
 btnUrlChannel = InlineKeyboardButton(
-    text="Obuna",
+    text="kanal 🔊",
     url="https://t.me/daallnc"
 )
 
 btnDoneSub = InlineKeyboardButton(
-    text="Obuna check",
+    text="Obunani tekshiring 🔐",
     callback_data="subchanneldone"
 )
 

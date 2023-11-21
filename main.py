@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=settings.bots.bot_token)
 dp = Dispatcher()
 db = Database("preson.db")
-not_sub_message = "kanalga obuna buling !"
+not_sub_message = "🔥 Davom etish uchun kanallarga obuna bo'ling. 👇🏻"
 
 
 def check_sup_channel(chat_member):
@@ -43,8 +43,8 @@ async def bot_message(message: types.Message):
         if check_sup_channel(
                 chat_member=await bot.get_chat_member(chat_id=settings.bots.channel_id, user_id=message.from_user.id)):
 
-            await bot.send_message(message.from_user.id, f" sizng raqamingiz {random.randint(700, 800)} ",
-                                   reply_markup=keyboard)  #
+            await bot.send_message(message.from_user.id, f" sizng raqamingiz {random.randint(700, 800)} "
+                                   )  # reply_markup=keyboard
 
         else:
             await bot.send_message(message.from_user.id, "No check_sup_channel")
@@ -57,7 +57,7 @@ async def sendallll(message: types.Message):
     if message.chat.type == "private":
         if message.from_user.id == 5751237091:
             text = message.text[9:]
-            users = db.get_user()
+            users = db.get_all_users()
             for row in users:
                 try:
                     await bot.send_message(row[0], text)
@@ -65,7 +65,7 @@ async def sendallll(message: types.Message):
                         db.set_active(row[0], 1)
                 except:
                     db.set_active(row[0], 0)
-            await bot.send_message(message.from_user.id, f"uspeshni rasiilka {users[1]}")
+            await bot.send_message(message.from_user.id, f"uspeshni rasiilka")
 
 
 async def main():
