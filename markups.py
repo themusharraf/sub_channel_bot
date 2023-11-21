@@ -15,12 +15,14 @@ keyboard = types.ReplyKeyboardMarkup(
 
 btnUrlChannel = InlineKeyboardButton(
     text="kanal 🔊",
-    url="https://t.me/daallnc"
+    url="https://t.me/daallnc",
+    resize_keyboard=True
 )
 
 btnDoneSub = InlineKeyboardButton(
     text="Obunani tekshiring 🔐",
-    callback_data="subchanneldone"
+    callback_data="subchanneldone",
+    resize_keyboard=True
 )
 
 # Create the InlineKeyboardMarkup and add the buttons
